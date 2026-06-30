@@ -1,0 +1,22 @@
+# Dependencies & build
+node_modules/
+.next/
+out/
+build/
+dist/
+.turbo/
+
+# Environment
+.env*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

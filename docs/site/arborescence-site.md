@@ -24,7 +24,7 @@ Le site comporte **10 pages / sections principales** :
 9. Panier
 10. Footer *(composant global, présent sur toutes les pages)*
 
-> Le détail interne de l'**Espace B2B** (parcours compte pro, commande, suivi commande, suivi livraison) fait l'objet d'un livrable dédié : `docs/arborescence-b2b.md`.
+> Le détail interne de l'**Espace B2B** (parcours compte pro, commande, suivi commande, suivi livraison) fait l'objet d'un livrable dédié : `../b2b/arborescence-b2b.md`.
 
 ---
 
@@ -124,7 +124,7 @@ Galerie visuels, informations produit (nom, prix, description, matières/parfum)
 
 ### 3.5 Espace Entreprise (vitrine B2B) — `/entreprise`
 Page publique dédiée aux professionnels : Bannière CTA, Secteurs Pro, Services Pro, **Formulaire Devis**, Footer.
-*(L'espace client B2B connecté est traité dans `arborescence-b2b.md`.)*
+*(L'espace client B2B connecté est traité dans `../b2b/arborescence-b2b.md`.)*
 
 ### 3.6 Notre Histoire — `/histoire`
 Description de la marque, Services Proposés, mise en avant Collections, renvoi Services Pro, Footer.
@@ -137,7 +137,7 @@ Point d'entrée d'authentification, deux parcours distincts :
 - **Espace Particulier (B2C)** — `/compte/particulier` : informations personnelles, adresse de livraison, historique de commande, suivi de commande, contact manager, réductions, dernières factures, favoris.
 - **Espace Entreprise (B2B)** — `/compte/entreprise` : informations client, adresse de livraison, historique de commande, suivi de commande, réductions, moyens de paiement, favoris.
 
-> Le détail des écrans B2B est développé dans le livrable dédié `arborescence-b2b.md`.
+> Le détail des écrans B2B est développé dans le livrable dédié `../b2b/arborescence-b2b.md`.
 
 ### 3.9 Panier — `/panier`
 Tunnel de commande : récapitulatif produits, Suggestions, Formulaire Livraison, Moyens de Paiement, Footer.

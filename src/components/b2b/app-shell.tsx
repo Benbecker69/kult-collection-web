@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { SidebarNav } from "./sidebar-nav";
 import { Topbar } from "./topbar";
+import { Toaster } from "./toaster";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,6 +32,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Topbar onBurger={() => setMenuOpen(true)} />
         <main className="flex-1 p-5 md:p-10">{children}</main>
       </div>
+
+      <Toaster />
     </div>
   );
 }

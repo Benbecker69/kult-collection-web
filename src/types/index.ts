@@ -68,6 +68,7 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
 };
 
 export interface OrderItem {
+  slug?: string;
   name: string;
   image: string;
   qty: number;

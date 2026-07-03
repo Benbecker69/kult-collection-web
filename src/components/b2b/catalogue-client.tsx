@@ -9,6 +9,10 @@ import {
   type ProProduct,
 } from "@/types";
 import { useCart } from "@/stores/cart-store";
+import { useFavorites } from "@/stores/favorites-store";
+import { useToasts } from "@/stores/toast-store";
+import { useHydrated } from "@/lib/use-hydrated";
+import { Reveal } from "./reveal";
 
 const filters: { key: "all" | Category; label: string }[] = [
   { key: "all", label: "Tout" },
@@ -19,11 +23,16 @@ const filters: { key: "all" | Category; label: string }[] = [
 ];
 
 export function CatalogueClient({ products }: { products: ProProduct[] }) {
+  const hydrated = useHydrated();
   const [filter, setFilter] = useState<"all" | Category>("all");
   const [query, setQuery] = useState("");
   const [qtys, setQtys] = useState<Record<string, number>>({});
   const [added, setAdded] = useState<string | null>(null);
+
   const add = useCart((s) => s.add);
+  const favs = useFavorites((s) => s.slugs);
+  const toggleFav = useFavorites((s) => s.toggle);
+  const pushToast = useToasts((s) => s.push);
 
   const visible = useMemo(
     () =>
@@ -42,7 +51,14 @@ export function CatalogueClient({ products }: { products: ProProduct[] }) {
       qty,
     );
     setAdded(p.slug);
+    pushToast(`${p.name} ajouté au panier`);
     setTimeout(() => setAdded((s) => (s === p.slug ? null : s)), 1300);
+  }
+
+  function handleFav(p: ProProduct) {
+    toggleFav(p.slug);
+    const isNow = !favs.includes(p.slug);
+    pushToast(isNow ? "Ajouté aux favoris" : "Retiré des favoris", "info");
   }
 
   return (
@@ -59,7 +75,6 @@ export function CatalogueClient({ products }: { products: ProProduct[] }) {
         </div>
       </div>
 
-      {/* Recherche + filtres */}
       <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap gap-2">
           {filters.map((f) => (
@@ -84,79 +99,94 @@ export function CatalogueClient({ products }: { products: ProProduct[] }) {
         />
       </div>
 
-      {/* Grille produits */}
       {visible.length === 0 ? (
         <p className="mt-16 text-center text-ink/50">
           Aucun produit ne correspond à votre recherche.
         </p>
       ) : (
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((p) => {
+          {visible.map((p, i) => {
             const qty = qtys[p.slug] ?? 1;
+            const isFav = hydrated && favs.includes(p.slug);
             return (
-              <div
-                key={p.slug}
-                className="group rounded-2xl border border-ink/10 bg-white/60 p-4 transition-all hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="grid aspect-square place-items-center overflow-hidden rounded-xl bg-sand/50">
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    width={150}
-                    height={150}
-                    className="transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <p className="mt-3 text-xs uppercase tracking-widest text-clay">
-                  {CATEGORY_LABELS[p.category]}
-                </p>
-                <h3 className="mt-1 text-sm font-medium text-ink">{p.name}</h3>
-                <div className="mt-2 flex items-baseline gap-2">
-                  <span className="text-lg font-medium text-ink">
-                    {p.proPrice.toFixed(2)} €
-                    <span className="ml-1 text-xs text-ink/40">HT</span>
-                  </span>
-                  <span className="text-sm text-ink/40 line-through">
-                    {p.price.toFixed(2)} €
-                  </span>
-                </div>
-                <div className="mt-3 flex items-center gap-2">
-                  <div className="flex items-center rounded-lg border border-ink/15">
+              <Reveal key={p.slug} delay={(i % 6) * 60}>
+                <div className="group rounded-2xl border border-ink/10 bg-white/60 p-4 transition-all hover:-translate-y-1 hover:shadow-lg">
+                  <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-sand/50">
                     <button
-                      onClick={() =>
-                        setQtys((q) => ({
-                          ...q,
-                          [p.slug]: Math.max(1, qty - 1),
-                        }))
-                      }
-                      className="grid h-9 w-8 place-items-center text-ink/60 hover:text-ink"
-                      aria-label="Diminuer"
+                      onClick={() => handleFav(p)}
+                      aria-label="Ajouter aux favoris"
+                      className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-cream/80 text-clay backdrop-blur transition-transform hover:scale-110"
                     >
-                      −
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill={isFav ? "currentColor" : "none"}
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      >
+                        <path d="M12 21s-7.5-4.6-10-9.2C.5 8.5 2 5 5.2 5c2 0 3.3 1.2 4.8 3 1.5-1.8 2.8-3 4.8-3C18 5 19.5 8.5 22 11.8 19.5 16.4 12 21 12 21z" />
+                      </svg>
                     </button>
-                    <span className="w-6 text-center text-sm">{qty}</span>
+                    <Image
+                      src={p.image}
+                      alt={p.name}
+                      width={150}
+                      height={150}
+                      className="transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <p className="mt-3 text-xs uppercase tracking-widest text-clay">
+                    {CATEGORY_LABELS[p.category]}
+                  </p>
+                  <h3 className="mt-1 text-sm font-medium text-ink">{p.name}</h3>
+                  <div className="mt-2 flex items-baseline gap-2">
+                    <span className="text-lg font-medium text-ink">
+                      {p.proPrice.toFixed(2)} €
+                      <span className="ml-1 text-xs text-ink/40">HT</span>
+                    </span>
+                    <span className="text-sm text-ink/40 line-through">
+                      {p.price.toFixed(2)} €
+                    </span>
+                  </div>
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="flex items-center rounded-lg border border-ink/15">
+                      <button
+                        onClick={() =>
+                          setQtys((q) => ({
+                            ...q,
+                            [p.slug]: Math.max(1, qty - 1),
+                          }))
+                        }
+                        className="grid h-9 w-8 place-items-center text-ink/60 hover:text-ink"
+                        aria-label="Diminuer"
+                      >
+                        −
+                      </button>
+                      <span className="w-6 text-center text-sm">{qty}</span>
+                      <button
+                        onClick={() =>
+                          setQtys((q) => ({ ...q, [p.slug]: qty + 1 }))
+                        }
+                        className="grid h-9 w-8 place-items-center text-ink/60 hover:text-ink"
+                        aria-label="Augmenter"
+                      >
+                        +
+                      </button>
+                    </div>
                     <button
-                      onClick={() =>
-                        setQtys((q) => ({ ...q, [p.slug]: qty + 1 }))
-                      }
-                      className="grid h-9 w-8 place-items-center text-ink/60 hover:text-ink"
-                      aria-label="Augmenter"
+                      onClick={() => handleAdd(p)}
+                      className={`flex-1 rounded-full px-4 py-2 text-sm transition-colors ${
+                        added === p.slug
+                          ? "bg-olive text-cream"
+                          : "bg-clay text-cream hover:bg-clayDark"
+                      }`}
                     >
-                      +
+                      {added === p.slug ? "Ajouté ✓" : "Ajouter"}
                     </button>
                   </div>
-                  <button
-                    onClick={() => handleAdd(p)}
-                    className={`flex-1 rounded-full px-4 py-2 text-sm transition-colors ${
-                      added === p.slug
-                        ? "bg-olive text-cream"
-                        : "bg-clay text-cream hover:bg-clayDark"
-                    }`}
-                  >
-                    {added === p.slug ? "Ajouté ✓" : "Ajouter"}
-                  </button>
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>

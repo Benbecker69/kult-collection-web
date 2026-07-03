@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAccount } from "@/stores/account-store";
+import { useToasts } from "@/stores/toast-store";
 import { useHydrated } from "@/lib/use-hydrated";
 
 const inputClass =
@@ -12,6 +13,7 @@ const sectors = ["Concept store", "Hôtellerie & spa", "Grand magasin", "Autre"]
 export default function InformationsPage() {
   const hydrated = useHydrated();
   const store = useAccount();
+  const pushToast = useToasts((s) => s.push);
   const [form, setForm] = useState(() => ({
     company: store.company,
     siret: store.siret,
@@ -32,6 +34,7 @@ export default function InformationsPage() {
   function save() {
     store.update(form);
     setSaved(true);
+    pushToast("Informations enregistrées");
     setTimeout(() => setSaved(false), 1600);
   }
 

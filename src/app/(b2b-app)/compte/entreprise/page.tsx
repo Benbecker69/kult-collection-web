@@ -5,6 +5,7 @@ import { useOrders } from "@/stores/orders-store";
 import { useAccount } from "@/stores/account-store";
 import { useHydrated } from "@/lib/use-hydrated";
 import { StatusBadge } from "@/components/b2b/status-badge";
+import { CountUp } from "@/components/b2b/count-up";
 
 const shortcuts = [
   { href: "/compte/entreprise/catalogue", label: "Commander", hint: "Catalogue pro" },
@@ -40,16 +41,28 @@ export default function DashboardPage() {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {[
-          { v: hydrated ? enCours.length : "—", l: "Commandes en cours" },
-          { v: hydrated ? livrees.length : "—", l: "Commandes livrées" },
-          { v: hydrated ? `${totalHT.toFixed(0)} €` : "—", l: "Total HT commandé" },
+          {
+            value: enCours.length,
+            l: "Commandes en cours",
+            fmt: (n: number) => Math.round(n).toString(),
+          },
+          {
+            value: livrees.length,
+            l: "Commandes livrées",
+            fmt: (n: number) => Math.round(n).toString(),
+          },
+          {
+            value: totalHT,
+            l: "Total HT commandé",
+            fmt: (n: number) => `${Math.round(n)} €`,
+          },
         ].map((s) => (
           <div
             key={s.l}
             className="rounded-2xl border border-ink/10 bg-white/60 p-6"
           >
             <p className="font-display text-3xl font-semibold text-clay">
-              {s.v}
+              {hydrated ? <CountUp value={s.value} format={s.fmt} /> : "—"}
             </p>
             <p className="mt-1 text-sm text-ink/60">{s.l}</p>
           </div>

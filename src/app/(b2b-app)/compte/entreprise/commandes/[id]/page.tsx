@@ -3,8 +3,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useOrders } from "@/stores/orders-store";
+import { useCart } from "@/stores/cart-store";
+import { useToasts } from "@/stores/toast-store";
 import { useHydrated } from "@/lib/use-hydrated";
 import { StatusBadge } from "@/components/b2b/status-badge";
 import { OrderSteps } from "@/components/b2b/order-steps";
@@ -16,6 +18,10 @@ function CommandeDetailContent() {
   const search = useSearchParams();
   const isNew = search.get("nouvelle") === "1";
   const orders = useOrders((s) => s.orders);
+  const advance = useOrders((s) => s.advance);
+  const add = useCart((s) => s.add);
+  const pushToast = useToasts((s) => s.push);
+  const router = useRouter();
 
   if (!hydrated) {
     return <div className="h-96 animate-pulse rounded-2xl bg-sand/40" />;
@@ -37,6 +43,26 @@ function CommandeDetailContent() {
         </Link>
       </div>
     );
+  }
+
+  const activeOrder = order;
+
+  function reorder() {
+    activeOrder.items.forEach((it) =>
+      add({
+        slug: it.slug ?? it.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        name: it.name,
+        image: it.image,
+        proPrice: it.unitPrice,
+      }),
+    );
+    pushToast("Produits ajoutés au panier");
+    router.push("/compte/entreprise/panier");
+  }
+
+  function handleAdvance() {
+    advance(activeOrder.id);
+    pushToast("Suivi mis à jour", "info");
   }
 
   return (
@@ -72,6 +98,16 @@ function CommandeDetailContent() {
           Suivi de commande
         </h2>
         <OrderSteps status={order.status} />
+        {order.status !== "livree" && order.status !== "annulee" && (
+          <div className="mt-6 flex justify-end">
+            <button
+              onClick={handleAdvance}
+              className="rounded-full border border-clay/40 px-4 py-2 text-sm text-clay transition-colors hover:bg-clay hover:text-cream"
+            >
+              Avancer le suivi (démo) →
+            </button>
+          </div>
+        )}
       </section>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
@@ -117,12 +153,12 @@ function CommandeDetailContent() {
             <button className="rounded-full border border-ink/15 px-4 py-2 text-sm text-ink transition-colors hover:border-ink/40">
               Télécharger la facture
             </button>
-            <Link
-              href="/compte/entreprise/catalogue"
+            <button
+              onClick={reorder}
               className="rounded-full bg-clay px-4 py-2 text-sm text-cream transition-colors hover:bg-clayDark"
             >
               Recommander
-            </Link>
+            </button>
           </div>
         </section>
 

@@ -93,10 +93,43 @@ body {
   animation: kult-pulse-dot 2s ease-in-out infinite;
 }
 
+@keyframes kult-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes kult-badge-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-toast-in {
+  animation: kult-toast-in 0.28s ease-out both;
+}
+
+.animate-badge-pop {
+  animation: kult-badge-pop 0.35s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-float,
-  .animate-pulse-dot {
+  .animate-pulse-dot,
+  .animate-toast-in,
+  .animate-badge-pop {
     animation: none;
   }
 }

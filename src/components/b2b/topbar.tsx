@@ -63,7 +63,10 @@ export function Topbar({ onBurger }: { onBurger?: () => void }) {
             <circle cx="18" cy="20" r="1.4" fill="currentColor" />
           </svg>
           {hydrated && count > 0 && (
-            <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-clay px-1 text-[11px] font-medium text-cream">
+            <span
+              key={count}
+              className="animate-badge-pop absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-clay px-1 text-[11px] font-medium text-cream"
+            >
               {count}
             </span>
           )}

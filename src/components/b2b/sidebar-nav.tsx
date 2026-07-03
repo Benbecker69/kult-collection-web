@@ -13,9 +13,10 @@ const primary = [
 const account = [
   { href: "/compte/entreprise/informations", label: "Informations" },
   { href: "/compte/entreprise/adresses", label: "Adresses" },
+  { href: "/compte/entreprise/favoris", label: "Favoris" },
 ];
 
-const soon = ["Réductions", "Moyens de paiement", "Favoris"];
+const soon = ["Réductions", "Moyens de paiement"];
 
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();

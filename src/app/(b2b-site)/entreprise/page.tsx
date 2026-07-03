@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Reveal } from "@/components/b2b/reveal";
+import { DevisForm } from "@/components/b2b/devis-form";
 
 const stats = [
   { value: "30+", label: "pays de distribution" },
@@ -201,33 +202,7 @@ export default function EntreprisePage() {
                   ligne.
                 </p>
               </div>
-              <form className="space-y-3">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <input
-                    placeholder="Nom"
-                    className="w-full rounded-xl border border-cream/15 bg-cream/5 px-4 py-3 text-sm text-cream placeholder-cream/40 outline-none focus:border-cream/40"
-                  />
-                  <input
-                    placeholder="Société"
-                    className="w-full rounded-xl border border-cream/15 bg-cream/5 px-4 py-3 text-sm text-cream placeholder-cream/40 outline-none focus:border-cream/40"
-                  />
-                </div>
-                <input
-                  placeholder="E-mail professionnel"
-                  className="w-full rounded-xl border border-cream/15 bg-cream/5 px-4 py-3 text-sm text-cream placeholder-cream/40 outline-none focus:border-cream/40"
-                />
-                <textarea
-                  rows={3}
-                  placeholder="Votre besoin"
-                  className="w-full rounded-xl border border-cream/15 bg-cream/5 px-4 py-3 text-sm text-cream placeholder-cream/40 outline-none focus:border-cream/40"
-                />
-                <button
-                  type="button"
-                  className="w-full rounded-full bg-clay px-6 py-3 text-sm font-medium text-cream transition-colors hover:bg-clayDark"
-                >
-                  Envoyer ma demande
-                </button>
-              </form>
+              <DevisForm />
             </div>
           </div>
         </Reveal>

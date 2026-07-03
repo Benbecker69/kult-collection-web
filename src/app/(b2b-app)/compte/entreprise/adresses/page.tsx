@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAccount } from "@/stores/account-store";
+import { useToasts } from "@/stores/toast-store";
 import { useHydrated } from "@/lib/use-hydrated";
 
 const inputClass =
@@ -13,6 +14,7 @@ export default function AdressesPage() {
   const addAddress = useAccount((s) => s.addAddress);
   const removeAddress = useAccount((s) => s.removeAddress);
   const setDefault = useAccount((s) => s.setDefaultAddress);
+  const pushToast = useToasts((s) => s.push);
 
   const [form, setForm] = useState({ label: "", line: "", city: "" });
 
@@ -20,6 +22,7 @@ export default function AdressesPage() {
     if (!form.label || !form.line || !form.city) return;
     addAddress(form);
     setForm({ label: "", line: "", city: "" });
+    pushToast("Adresse ajoutée");
   }
 
   return (
@@ -56,14 +59,20 @@ export default function AdressesPage() {
               <div className="flex items-center gap-3 text-sm">
                 {!a.isDefault && (
                   <button
-                    onClick={() => setDefault(a.id)}
+                    onClick={() => {
+                      setDefault(a.id);
+                      pushToast("Adresse par défaut mise à jour", "info");
+                    }}
                     className="text-ink/60 transition-colors hover:text-ink"
                   >
                     Définir par défaut
                   </button>
                 )}
                 <button
-                  onClick={() => removeAddress(a.id)}
+                  onClick={() => {
+                    removeAddress(a.id);
+                    pushToast("Adresse supprimée", "info");
+                  }}
                   className="text-ink/40 transition-colors hover:text-clay"
                 >
                   Supprimer

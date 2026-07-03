@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Reveal } from "@/components/b2b/reveal";
 import { DevisForm } from "@/components/b2b/devis-form";
+import { BrandLogo } from "@/components/b2b/brand-logo";
 
 const stats = [
   { value: "30+", label: "pays de distribution" },
@@ -85,6 +86,9 @@ export default function EntreprisePage() {
               <div className="absolute inset-0 rotate-3 rounded-[2rem] bg-blush" />
               <div className="absolute inset-0 -rotate-2 rounded-[2rem] bg-sand" />
               <div className="absolute inset-0 grid place-items-center rounded-[2rem] bg-gradient-to-br from-cream to-sand shadow-xl">
+                <div className="absolute left-5 top-5">
+                  <BrandLogo showPro={false} />
+                </div>
                 <Image
                   src="/images/products/carafe.png"
                   alt="Céramique KULT"

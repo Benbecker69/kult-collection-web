@@ -19,7 +19,7 @@ export function BrandLogo({
   onClick,
   size = "md",
 }: BrandLogoProps) {
-  const h = size === "sm" ? "h-3.5" : "h-4";
+  const h = size === "sm" ? "h-4" : "h-5";
 
   const inner = (
     <span className="flex items-center gap-2">

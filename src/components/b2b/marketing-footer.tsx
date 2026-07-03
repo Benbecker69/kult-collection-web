@@ -1,9 +1,17 @@
+import Image from "next/image";
+
 export function MarketingFooter() {
   return (
     <footer className="bg-ink text-cream/80">
       <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 md:grid-cols-3">
         <div>
-          <p className="font-display text-2xl text-cream">KULT Collection</p>
+          <Image
+            src="/icons/logo.png"
+            alt="KULT Collection"
+            width={150}
+            height={44}
+            className="h-9 w-auto"
+          />
           <p className="mt-2 max-w-xs text-sm text-cream/60">
             Maison d&apos;artisanat contemporain — bougies, parfums d&apos;intérieur
             & céramique. L&apos;art de vivre californien et méditerranéen.

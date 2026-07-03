@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "./brand-logo";
 
 const primary = [
   { href: "/compte/entreprise", label: "Tableau de bord" },
@@ -27,13 +28,9 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex h-full flex-col">
-      <Link
-        href="/entreprise"
-        onClick={onNavigate}
-        className="mb-8 font-display text-xl font-semibold text-ink"
-      >
-        KULT <span className="text-clay">Pro</span>
-      </Link>
+      <div className="mb-8">
+        <BrandLogo href="/entreprise" onClick={onNavigate} />
+      </div>
 
       <nav className="flex flex-col gap-1">
         {primary.map((l) => (

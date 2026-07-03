@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BrandLogo } from "./brand-logo";
 import { useCart, countItems } from "@/stores/cart-store";
 import { useAccount } from "@/stores/account-store";
 import { useAuth } from "@/stores/auth-store";
@@ -41,8 +42,8 @@ export function Topbar({ onBurger }: { onBurger?: () => void }) {
             />
           </svg>
         </button>
-        <div className="font-display text-lg font-semibold text-ink md:hidden">
-          KULT <span className="text-clay">Pro</span>
+        <div className="md:hidden">
+          <BrandLogo href="/compte/entreprise" showPro={false} size="sm" />
         </div>
         <div className="hidden text-sm text-ink/50 md:block">
           Espace revendeur

@@ -1,16 +1,23 @@
+"use client";
+
 import Link from "next/link";
-import { getB2bOrders } from "@/lib/repository";
+import { useOrders } from "@/stores/orders-store";
+import { useAccount } from "@/stores/account-store";
+import { useHydrated } from "@/lib/use-hydrated";
 import { StatusBadge } from "@/components/b2b/status-badge";
 
 const shortcuts = [
   { href: "/compte/entreprise/catalogue", label: "Commander", hint: "Catalogue pro" },
   { href: "/compte/entreprise/commandes", label: "Mes commandes", hint: "Historique & suivi" },
-  { href: "/compte/entreprise/commandes", label: "Suivre une livraison", hint: "En temps réel" },
-  { href: "/compte/entreprise/catalogue", label: "Réassort favoris", hint: "En un clic" },
+  { href: "/compte/entreprise/panier", label: "Mon panier", hint: "Finaliser une commande" },
+  { href: "/compte/entreprise/informations", label: "Mon compte", hint: "Infos & adresses" },
 ];
 
-export default async function DashboardPage() {
-  const orders = await getB2bOrders();
+export default function DashboardPage() {
+  const hydrated = useHydrated();
+  const orders = useOrders((s) => s.orders);
+  const company = useAccount((s) => s.company);
+
   const enCours = orders.filter(
     (o) => o.status !== "livree" && o.status !== "annulee",
   );
@@ -23,29 +30,33 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto max-w-5xl">
       <div className="animate-fade-up">
-        <h1 className="font-display text-3xl text-ink">Bonjour, Maison Léa</h1>
-        <p className="mt-1 text-ink/50">Voici l&apos;activité de votre compte revendeur.</p>
+        <h1 className="font-display text-3xl font-semibold text-ink">
+          Bonjour, {hydrated ? company : ""}
+        </h1>
+        <p className="mt-1 text-ink/50">
+          Voici l&apos;activité de votre compte revendeur.
+        </p>
       </div>
 
-      {/* Stats */}
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {[
-          { v: enCours.length, l: "Commandes en cours" },
-          { v: livrees.length, l: "Commandes livrées" },
-          { v: `${totalHT.toFixed(0)} €`, l: "Total HT commandé" },
+          { v: hydrated ? enCours.length : "—", l: "Commandes en cours" },
+          { v: hydrated ? livrees.length : "—", l: "Commandes livrées" },
+          { v: hydrated ? `${totalHT.toFixed(0)} €` : "—", l: "Total HT commandé" },
         ].map((s) => (
           <div
             key={s.l}
             className="rounded-2xl border border-ink/10 bg-white/60 p-6"
           >
-            <p className="font-display text-3xl text-clay">{s.v}</p>
+            <p className="font-display text-3xl font-semibold text-clay">
+              {s.v}
+            </p>
             <p className="mt-1 text-sm text-ink/60">{s.l}</p>
           </div>
         ))}
       </div>
 
-      {/* Dernière commande */}
-      {last && (
+      {hydrated && last && (
         <div className="mt-6 rounded-2xl border border-ink/10 bg-white/60 p-6">
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-widest text-ink/40">
@@ -55,7 +66,9 @@ export default async function DashboardPage() {
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="font-display text-2xl text-ink">{last.id}</p>
+              <p className="font-display text-2xl font-semibold text-ink">
+                {last.id}
+              </p>
               <p className="text-sm text-ink/50">
                 {new Date(last.date).toLocaleDateString("fr-FR")} ·{" "}
                 {last.totalHT.toFixed(2)} € HT
@@ -71,7 +84,6 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* Raccourcis */}
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {shortcuts.map((s) => (
           <Link

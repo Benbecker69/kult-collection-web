@@ -82,3 +82,11 @@ export async function getB2bOrders(): Promise<Order[]> {
 export async function getB2bOrderById(id: string): Promise<Order | undefined> {
   return b2bOrders.find((o) => o.id === id);
 }
+
+/**
+ * Graine synchrone des commandes — utilisée pour initialiser le store client.
+ * (Demain : cet historique proviendrait de l'API commerce Shopify.)
+ */
+export function seedOrders(): Order[] {
+  return b2bOrders;
+}

@@ -16,17 +16,18 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* --- Direction artistique Espace B2B (chaleureuse / artisanale) --- */
-  --color-cream: #fbf6ec;
-  --color-sand: #f3e9d7;
-  --color-blush: #f6ded6;
-  --color-clay: #c56b4b;
-  --color-clayDark: #a9532f;
-  --color-olive: #6f7b53;
-  --color-gold: #d9a441;
-  --color-ink: #2b2420;
+  /* --- DA Espace B2B — alignée sur la charte B2C (cobalt / crème / pastels) --- */
+  --color-cream: #fcf4e6; /* fond principal (beige clair, cf. beigeClaire) */
+  --color-sand: #f4ecd8; /* surface chaude */
+  --color-sky: #dcebfb; /* accent bleu pastel (cf. bleuClaire) */
+  --color-blush: #ffd5e5; /* accent rose pastel (cf. rosePastel) */
+  --color-clay: #1155cc; /* PRIMAIRE = cobalt KULT (couleur d'action) */
+  --color-clayDark: #0e46a6; /* cobalt foncé (hover) */
+  --color-olive: #5f8a5a; /* vert « livré » (statut) */
+  --color-gold: #d9a441; /* ambre « en préparation » (statut) */
+  --color-ink: #1c1b19; /* texte principal */
   --color-kultBlue: #1155cc;
-  --font-display: var(--font-fraunces);
+  --font-display: var(--font-geist-sans);
 }
 
 @layer components {
@@ -73,10 +74,10 @@ body {
 @keyframes kult-pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(197, 107, 75, 0.5);
+    box-shadow: 0 0 0 0 rgba(17, 85, 204, 0.45);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(197, 107, 75, 0);
+    box-shadow: 0 0 0 6px rgba(17, 85, 204, 0);
   }
 }
 

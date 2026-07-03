@@ -47,7 +47,7 @@ export default function EntreprisePage() {
           className="pointer-events-none absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(120% 90% at 85% 0%, rgba(246,222,214,0.9) 0%, rgba(251,246,236,0) 60%), radial-gradient(90% 80% at 0% 100%, rgba(197,107,75,0.14) 0%, rgba(251,246,236,0) 55%)",
+              "radial-gradient(120% 90% at 85% 0%, rgba(255,213,229,0.6) 0%, rgba(252,244,230,0) 60%), radial-gradient(90% 80% at 0% 100%, rgba(17,85,204,0.12) 0%, rgba(252,244,230,0) 55%)",
           }}
         />
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">

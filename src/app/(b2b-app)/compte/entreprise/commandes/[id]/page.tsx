@@ -1,24 +1,43 @@
+"use client";
+
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { getB2bOrders, getB2bOrderById } from "@/lib/repository";
+import { useParams, useSearchParams } from "next/navigation";
+import { useOrders } from "@/stores/orders-store";
+import { useHydrated } from "@/lib/use-hydrated";
 import { StatusBadge } from "@/components/b2b/status-badge";
 import { OrderSteps } from "@/components/b2b/order-steps";
 import { OrderTimeline } from "@/components/b2b/order-timeline";
 
-export async function generateStaticParams() {
-  const orders = await getB2bOrders();
-  return orders.map((o) => ({ id: o.id }));
-}
+function CommandeDetailContent() {
+  const hydrated = useHydrated();
+  const params = useParams<{ id: string }>();
+  const search = useSearchParams();
+  const isNew = search.get("nouvelle") === "1";
+  const orders = useOrders((s) => s.orders);
 
-export default async function CommandeDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const order = await getB2bOrderById(id);
-  if (!order) notFound();
+  if (!hydrated) {
+    return <div className="h-96 animate-pulse rounded-2xl bg-sand/40" />;
+  }
+
+  const order = orders.find((o) => o.id === params.id);
+
+  if (!order) {
+    return (
+      <div className="mx-auto max-w-md py-16 text-center">
+        <h1 className="font-display text-2xl font-semibold text-ink">
+          Commande introuvable
+        </h1>
+        <Link
+          href="/compte/entreprise/commandes"
+          className="mt-4 inline-block text-sm text-clay hover:underline"
+        >
+          ← Retour à mes commandes
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -29,9 +48,18 @@ export default async function CommandeDetailPage({
         ← Mes commandes
       </Link>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3 animate-fade-up">
+      {isNew && (
+        <div className="mt-4 animate-fade-up rounded-2xl bg-olive/15 px-5 py-4 text-sm text-[#3f5a3a]">
+          ✓ Commande <span className="font-medium">{order.id}</span> confirmée —
+          un récapitulatif vous a été envoyé par e-mail.
+        </div>
+      )}
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl text-ink">Commande {order.id}</h1>
+          <h1 className="font-display text-3xl font-semibold text-ink">
+            Commande {order.id}
+          </h1>
           <p className="text-sm text-ink/50">
             Passée le {new Date(order.date).toLocaleDateString("fr-FR")}
           </p>
@@ -39,7 +67,6 @@ export default async function CommandeDetailPage({
         <StatusBadge status={order.status} />
       </div>
 
-      {/* Suivi de commande */}
       <section className="mt-8 rounded-2xl border border-ink/10 bg-white/60 p-6">
         <h2 className="mb-6 text-xs uppercase tracking-widest text-ink/40">
           Suivi de commande
@@ -48,7 +75,6 @@ export default async function CommandeDetailPage({
       </section>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
-        {/* Articles */}
         <section className="rounded-2xl border border-ink/10 bg-white/60 p-6">
           <h2 className="mb-4 text-xs uppercase tracking-widest text-ink/40">
             Articles
@@ -57,12 +83,7 @@ export default async function CommandeDetailPage({
             {order.items.map((item, i) => (
               <li key={i} className="flex items-center gap-4">
                 <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-sand/50">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={44}
-                    height={44}
-                  />
+                  <Image src={item.image} alt={item.name} width={44} height={44} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-ink">
@@ -80,7 +101,7 @@ export default async function CommandeDetailPage({
           </ul>
           <div className="mt-4 flex items-center justify-between border-t border-ink/10 pt-4">
             <span className="text-sm text-ink/60">Total HT</span>
-            <span className="font-display text-xl text-ink">
+            <span className="font-display text-xl font-semibold text-ink">
               {order.totalHT.toFixed(2)} €
             </span>
           </div>
@@ -96,13 +117,15 @@ export default async function CommandeDetailPage({
             <button className="rounded-full border border-ink/15 px-4 py-2 text-sm text-ink transition-colors hover:border-ink/40">
               Télécharger la facture
             </button>
-            <button className="rounded-full bg-clay px-4 py-2 text-sm text-cream transition-colors hover:bg-clayDark">
+            <Link
+              href="/compte/entreprise/catalogue"
+              className="rounded-full bg-clay px-4 py-2 text-sm text-cream transition-colors hover:bg-clayDark"
+            >
               Recommander
-            </button>
+            </Link>
           </div>
         </section>
 
-        {/* Suivi de livraison */}
         <section className="rounded-2xl border border-ink/10 bg-white/60 p-6">
           <h2 className="mb-4 text-xs uppercase tracking-widest text-ink/40">
             Suivi de livraison
@@ -132,5 +155,15 @@ export default async function CommandeDetailPage({
         </section>
       </div>
     </div>
+  );
+}
+
+export default function CommandeDetailPage() {
+  return (
+    <Suspense
+      fallback={<div className="h-96 animate-pulse rounded-2xl bg-sand/40" />}
+    >
+      <CommandeDetailContent />
+    </Suspense>
   );
 }

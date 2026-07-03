@@ -1,0 +1,79 @@
+[
+  {
+    "id": "KP-1043",
+    "date": "2026-07-02",
+    "status": "validee",
+    "items": [
+      { "name": "Bougie « Figue de Grasse »", "image": "/images/products/bougiefigue.png", "qty": 12, "unitPrice": 21 },
+      { "name": "Assiette « Ciao Bella »", "image": "/images/products/assietteCiaoBella.png", "qty": 8, "unitPrice": 12.6 }
+    ],
+    "totalHT": 352.8,
+    "carrier": "Chronopost",
+    "trackingNumber": null,
+    "delivery": [
+      { "label": "Commande préparée", "done": false },
+      { "label": "Expédiée", "done": false },
+      { "label": "En transit", "done": false },
+      { "label": "En cours de livraison", "done": false },
+      { "label": "Livrée", "done": false }
+    ],
+    "address": "Maison Léa — 24 rue des Martyrs, 75009 Paris",
+    "payment": "Virement"
+  },
+  {
+    "id": "KP-1042",
+    "date": "2026-06-12",
+    "status": "expediee",
+    "items": [
+      { "name": "Carafe « Riviera »", "image": "/images/products/carafe.png", "qty": 10, "unitPrice": 23.4 },
+      { "name": "Bougeoir « Soleil »", "image": "/images/products/bougeaoire.png", "qty": 6, "unitPrice": 17.4 }
+    ],
+    "totalHT": 338.4,
+    "carrier": "Chronopost",
+    "trackingNumber": "XY123456789FR",
+    "delivery": [
+      { "label": "Commande préparée", "date": "12/06 · 09:20", "done": true },
+      { "label": "Expédiée", "date": "12/06 · 18:00", "done": true },
+      { "label": "En transit", "done": false },
+      { "label": "En cours de livraison", "done": false },
+      { "label": "Livrée", "done": false }
+    ],
+    "address": "Concept Store Vervaine — 8 place du Marché, 69001 Lyon",
+    "payment": "Paiement à 30 jours"
+  },
+  {
+    "id": "KP-1039",
+    "date": "2026-05-28",
+    "status": "livree",
+    "items": [
+      { "name": "Diffuseur « Palm »", "image": "/images/products/diffuseur-palm.png", "qty": 9, "unitPrice": 25.2 },
+      { "name": "Coupelle « Coquillage »", "image": "/images/products/coquillage.png", "qty": 15, "unitPrice": 10.2 }
+    ],
+    "totalHT": 379.8,
+    "carrier": "Colissimo",
+    "trackingNumber": "6A09872345621",
+    "delivery": [
+      { "label": "Commande préparée", "date": "28/05 · 10:10", "done": true },
+      { "label": "Expédiée", "date": "28/05 · 16:40", "done": true },
+      { "label": "En transit", "date": "29/05 · 08:00", "done": true },
+      { "label": "En cours de livraison", "date": "30/05 · 09:15", "done": true },
+      { "label": "Livrée", "date": "30/05 · 11:32", "done": true }
+    ],
+    "address": "Maison Léa — 24 rue des Martyrs, 75009 Paris",
+    "payment": "Virement"
+  },
+  {
+    "id": "KP-1035",
+    "date": "2026-05-10",
+    "status": "annulee",
+    "items": [
+      { "name": "Assiette « Wake Up in California »", "image": "/images/products/wakeUpIn.png", "qty": 6, "unitPrice": 13.8 }
+    ],
+    "totalHT": 82.8,
+    "carrier": null,
+    "trackingNumber": null,
+    "delivery": [],
+    "address": "Concept Store Vervaine — 8 place du Marché, 69001 Lyon",
+    "payment": "Carte bancaire"
+  }
+]

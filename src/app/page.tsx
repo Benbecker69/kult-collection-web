@@ -1,17 +1,12 @@
 import { Baniere } from "@/components/layout/baniere";
 import { Bestsellers } from "@/components/layout/bestsellers/bestsellers";
-import { ButtonPrincipal } from "@/components/layout/boutton-principal";
-import { CollectionCard } from "@/components/layout/collections/collection-card";
 import { Collections } from "@/components/layout/collections/collections";
 import { HistoireSection } from "@/components/layout/histoire/histoire-section";
-import { HistorySection } from "@/components/layout/history-section";
-import { Icon } from "@/components/layout/icon";
 import { TitleSection } from "@/components/layout/title-section";
-import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center font-sans bg-yellow-400">
+    <div className="flex flex-col flex-1 items-center justify-center font-sans">
       <main className="flex flex-1 w-full flex-col items-center justify-between sm:items-start">
         <Baniere />
         <Collections />

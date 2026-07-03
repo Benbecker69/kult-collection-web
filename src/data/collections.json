@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "california-dreamin",
+    "name": "California Dreamin'",
+    "image": "/images/collections/california_dreamin.jpeg",
+    "description": "La décontraction lumineuse de la côte ouest, en couleurs et en douceur."
+  },
+  {
+    "slug": "santa-barbara",
+    "name": "Santa Barbara Bloom",
+    "image": "/images/collections/santa_barbara.jpeg",
+    "description": "Des tons floraux et solaires inspirés des jardins californiens."
+  },
+  {
+    "slug": "malibu",
+    "name": "Malibu",
+    "image": "/images/collections/malibu.jpeg",
+    "description": "L'esprit balnéaire chic, entre océan et lumière dorée."
+  },
+  {
+    "slug": "palm-springs-escape",
+    "name": "Palm Springs Escape",
+    "image": "/images/collections/palm_springs_escape.png",
+    "description": "Un désert rétro et graphique, palmiers et piscines turquoise."
+  },
+  {
+    "slug": "mediterranean-club",
+    "name": "Mediterranean Club",
+    "image": "/images/collections/mediterranean_club.jpeg",
+    "description": "La sensorialité chaude de la Méditerranée, artisanat et convivialité."
+  }
+]

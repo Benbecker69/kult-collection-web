@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "assiette-wake-up-california",
+    "name": "Assiette « Wake Up in California »",
+    "category": "ceramiques",
+    "collectionSlug": "california-dreamin",
+    "price": 23,
+    "image": "/images/products/wakeUpIn.png",
+    "description": "Assiette en céramique tournée et peinte à la main en Andalousie.",
+    "featured": true
+  },
+  {
+    "slug": "carafe-riviera",
+    "name": "Carafe « Riviera »",
+    "category": "ceramiques",
+    "collectionSlug": "malibu",
+    "price": 39,
+    "image": "/images/products/carafe.png",
+    "description": "Carafe artisanale aux rayures solaires, pièce unique.",
+    "featured": true
+  },
+  {
+    "slug": "assiette-cherry",
+    "name": "Assiette « Cherry »",
+    "category": "ceramiques",
+    "collectionSlug": "santa-barbara",
+    "price": 19,
+    "image": "/images/products/assietteCh.png",
+    "description": "Petite assiette à motifs cerises, peinte à la main.",
+    "featured": true
+  },
+  {
+    "slug": "assiette-ciao-bella",
+    "name": "Assiette « Ciao Bella »",
+    "category": "ceramiques",
+    "collectionSlug": "mediterranean-club",
+    "price": 21,
+    "image": "/images/products/assietteCiaoBella.png",
+    "description": "Un clin d'œil méditerranéen pour la table.",
+    "featured": true
+  },
+  {
+    "slug": "bougeoir-soleil",
+    "name": "Bougeoir « Soleil »",
+    "category": "ceramiques",
+    "collectionSlug": "palm-springs-escape",
+    "price": 29,
+    "image": "/images/products/bougeaoire.png",
+    "description": "Bougeoir en céramique, forme organique et finition mate.",
+    "featured": true
+  },
+  {
+    "slug": "bougie-figue-de-grasse",
+    "name": "Bougie « Figue de Grasse »",
+    "category": "bougies",
+    "collectionSlug": "mediterranean-club",
+    "price": 35,
+    "image": "/images/products/bougiefigue.png",
+    "description": "Cire de soja 100% naturelle, mèche coton bio, parfum composé à Grasse.",
+    "featured": true
+  },
+  {
+    "slug": "coupelle-coquillage",
+    "name": "Coupelle « Coquillage »",
+    "category": "ceramiques",
+    "collectionSlug": "santa-barbara",
+    "price": 17,
+    "image": "/images/products/coquillage.png",
+    "description": "Coupelle vide-poche en forme de coquillage, peinte à la main.",
+    "featured": true
+  },
+  {
+    "slug": "diffuseur-palm",
+    "name": "Diffuseur « Palm »",
+    "category": "diffuseurs",
+    "collectionSlug": "palm-springs-escape",
+    "price": 42,
+    "image": "/images/products/A91cy8exl_cxlvgb_88g 1 (2).png",
+    "description": "Diffuseur d'intérieur, bâtonnets en rotin et parfum de Grasse.",
+    "featured": false
+  }
+]

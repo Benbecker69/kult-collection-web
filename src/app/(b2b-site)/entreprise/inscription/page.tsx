@@ -8,6 +8,7 @@ import {
   validPhone,
   validSiret,
   validVat,
+  minLen,
   isClean,
 } from "@/lib/validation";
 
@@ -28,6 +29,8 @@ export default function InscriptionPage() {
     name: "",
     phone: "",
     email: "",
+    password: "",
+    confirm: "",
     cgv: false,
   });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -41,6 +44,12 @@ export default function InscriptionPage() {
     name: required(form.name, "Le nom"),
     email: validEmail(form.email),
     phone: validPhone(form.phone),
+    password: minLen(form.password, 8, "Le mot de passe"),
+    confirm: !form.confirm
+      ? "Veuillez confirmer le mot de passe."
+      : form.confirm !== form.password
+        ? "Les mots de passe ne correspondent pas."
+        : null,
     cgv: form.cgv ? null : "Vous devez accepter les CGV pro.",
   };
 
@@ -58,6 +67,8 @@ export default function InscriptionPage() {
       name: true,
       email: true,
       phone: true,
+      password: true,
+      confirm: true,
       cgv: true,
     }));
     if (isClean(e2)) setStep(3);
@@ -206,6 +217,38 @@ export default function InscriptionPage() {
               onBlur={() => touch("email")}
             />
             <ErrMsg show={touched.email ? e2.email : null} />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-sm text-ink/70">
+                Mot de passe
+              </label>
+              <input
+                type="password"
+                className={cls(touched.password && e2.password)}
+                placeholder="8 caractères minimum"
+                maxLength={64}
+                value={form.password}
+                onChange={(e) => set("password", e.target.value)}
+                onBlur={() => touch("password")}
+              />
+              <ErrMsg show={touched.password ? e2.password : null} />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm text-ink/70">
+                Confirmer le mot de passe
+              </label>
+              <input
+                type="password"
+                className={cls(touched.confirm && e2.confirm)}
+                placeholder="••••••••"
+                maxLength={64}
+                value={form.confirm}
+                onChange={(e) => set("confirm", e.target.value)}
+                onBlur={() => touch("confirm")}
+              />
+              <ErrMsg show={touched.confirm ? e2.confirm : null} />
+            </div>
           </div>
           <div>
             <label className="flex items-start gap-3 text-sm text-ink/70">

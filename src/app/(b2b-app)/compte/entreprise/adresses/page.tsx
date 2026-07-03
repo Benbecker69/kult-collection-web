@@ -4,9 +4,12 @@ import { useState } from "react";
 import { useAccount } from "@/stores/account-store";
 import { useToasts } from "@/stores/toast-store";
 import { useHydrated } from "@/lib/use-hydrated";
+import { required, isClean } from "@/lib/validation";
 
-const inputClass =
-  "w-full rounded-xl border border-ink/15 bg-white/70 px-4 py-2.5 text-sm text-ink outline-none transition-colors focus:border-clay";
+const base =
+  "w-full rounded-xl border bg-white/70 px-4 py-2.5 text-sm text-ink placeholder-ink/40 outline-none transition-colors";
+const cls = (bad?: string | null) =>
+  `${base} ${bad ? "border-red-400 focus:border-red-400" : "border-ink/15 focus:border-clay"}`;
 
 export default function AdressesPage() {
   const hydrated = useHydrated();
@@ -17,13 +20,29 @@ export default function AdressesPage() {
   const pushToast = useToasts((s) => s.push);
 
   const [form, setForm] = useState({ label: "", line: "", city: "" });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const errs = {
+    label: required(form.label, "Le libellé"),
+    line: required(form.line, "L'adresse"),
+    city: required(form.city, "La ville"),
+  };
+  const set = (k: keyof typeof form, v: string) =>
+    setForm((f) => ({ ...f, [k]: v }));
+  const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
+  const showErr = (k: keyof typeof errs) => (touched[k] ? errs[k] : null);
 
   function add() {
-    if (!form.label || !form.line || !form.city) return;
+    setTouched({ label: true, line: true, city: true });
+    if (!isClean(errs)) return;
     addAddress(form);
     setForm({ label: "", line: "", city: "" });
+    setTouched({});
     pushToast("Adresse ajoutée");
   }
+
+  const ErrMsg = ({ show }: { show?: string | null }) =>
+    show ? <p className="mt-1 text-xs text-red-500">{show}</p> : null;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -86,30 +105,44 @@ export default function AdressesPage() {
         </div>
       )}
 
-      {/* Ajouter une adresse */}
       <div className="mt-6 rounded-2xl border border-dashed border-ink/20 bg-white/40 p-5">
         <p className="mb-3 text-xs uppercase tracking-widest text-ink/40">
           Ajouter une adresse
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
-          <input
-            className={inputClass}
-            placeholder="Libellé (ex. Boutique)"
-            value={form.label}
-            onChange={(e) => setForm((f) => ({ ...f, label: e.target.value }))}
-          />
-          <input
-            className={inputClass}
-            placeholder="Adresse"
-            value={form.line}
-            onChange={(e) => setForm((f) => ({ ...f, line: e.target.value }))}
-          />
-          <input
-            className={inputClass}
-            placeholder="Code postal & ville"
-            value={form.city}
-            onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-          />
+          <div>
+            <input
+              className={cls(showErr("label"))}
+              placeholder="Libellé (ex. Boutique)"
+              maxLength={40}
+              value={form.label}
+              onChange={(e) => set("label", e.target.value)}
+              onBlur={() => touch("label")}
+            />
+            <ErrMsg show={showErr("label")} />
+          </div>
+          <div>
+            <input
+              className={cls(showErr("line"))}
+              placeholder="Adresse"
+              maxLength={80}
+              value={form.line}
+              onChange={(e) => set("line", e.target.value)}
+              onBlur={() => touch("line")}
+            />
+            <ErrMsg show={showErr("line")} />
+          </div>
+          <div>
+            <input
+              className={cls(showErr("city"))}
+              placeholder="Code postal & ville"
+              maxLength={60}
+              value={form.city}
+              onChange={(e) => set("city", e.target.value)}
+              onBlur={() => touch("city")}
+            />
+            <ErrMsg show={showErr("city")} />
+          </div>
         </div>
         <button
           onClick={add}

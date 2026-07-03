@@ -1,21 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { SidebarNav } from "./sidebar-nav";
 import { Topbar } from "./topbar";
 import { Toaster } from "./toaster";
+import { useAuth } from "@/stores/auth-store";
+import { useHydrated } from "@/lib/use-hydrated";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const hydrated = useHydrated();
+  const authed = useAuth((s) => s.authed);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (hydrated && !authed) router.replace("/connexion");
+  }, [hydrated, authed, router]);
+
+  // Tant que non hydraté ou non connecté : on n'affiche pas l'espace privé.
+  if (!hydrated || !authed) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-cream text-sm text-ink/40">
+        Chargement…
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-cream font-sans text-ink">
-      {/* Sidebar desktop */}
       <aside className="hidden w-64 shrink-0 border-r border-ink/10 bg-sand/40 p-5 md:block">
         <SidebarNav />
       </aside>
 
-      {/* Drawer mobile */}
       {menuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div

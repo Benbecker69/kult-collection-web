@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart, countItems } from "@/stores/cart-store";
 import { useAccount } from "@/stores/account-store";
+import { useAuth } from "@/stores/auth-store";
 import { useHydrated } from "@/lib/use-hydrated";
 
 function initials(name: string) {
@@ -18,6 +20,8 @@ export function Topbar({ onBurger }: { onBurger?: () => void }) {
   const hydrated = useHydrated();
   const items = useCart((s) => s.items);
   const company = useAccount((s) => s.company);
+  const logout = useAuth((s) => s.logout);
+  const router = useRouter();
   const count = hydrated ? countItems(items) : 0;
 
   return (
@@ -81,6 +85,24 @@ export function Topbar({ onBurger }: { onBurger?: () => void }) {
         <div className="grid h-9 w-9 place-items-center rounded-full bg-clay text-sm font-medium text-cream">
           {hydrated ? initials(company) : ""}
         </div>
+        <button
+          onClick={() => {
+            logout();
+            router.push("/connexion");
+          }}
+          aria-label="Déconnexion"
+          className="grid h-9 w-9 place-items-center rounded-lg text-ink/50 transition-colors hover:bg-sand/60 hover:text-ink"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M15 12H3m0 0l4-4m-4 4l4 4M13 4h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-6"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </header>
   );

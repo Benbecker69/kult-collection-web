@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { required, validEmail, isClean } from "@/lib/validation";
+import { useAuth, DEMO_EMAIL, DEMO_PASSWORD } from "@/stores/auth-store";
 
 const base =
   "w-full rounded-xl border bg-white/70 px-4 py-3 text-sm text-ink placeholder-ink/40 outline-none transition-colors";
@@ -12,8 +13,10 @@ const cls = (bad?: string | null) =>
 
 export default function ConnexionPage() {
   const router = useRouter();
+  const login = useAuth((s) => s.login);
   const [form, setForm] = useState({ email: "", password: "" });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const errs = {
     email: validEmail(form.email),
@@ -24,10 +27,22 @@ export default function ConnexionPage() {
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const showErr = (k: keyof typeof errs) => (touched[k] ? errs[k] : null);
 
-  function login() {
+  function doLogin() {
     setTouched({ email: true, password: true });
+    setAuthError(null);
     if (!isClean(errs)) return;
+    const ok = login(form.email, form.password);
+    if (!ok) {
+      setAuthError("Identifiants incorrects. Vérifiez l'e-mail et le mot de passe.");
+      return;
+    }
     router.push("/compte/entreprise");
+  }
+
+  function useDemo() {
+    setForm({ email: DEMO_EMAIL, password: DEMO_PASSWORD });
+    setTouched({});
+    setAuthError(null);
   }
 
   const ErrMsg = ({ show }: { show?: string | null }) =>
@@ -43,12 +58,26 @@ export default function ConnexionPage() {
           Accédez à votre espace revendeur.
         </p>
 
-        <div className="mt-8 space-y-4">
+        {/* Compte de démonstration */}
+        <div className="mt-6 rounded-xl bg-sky/60 px-4 py-3 text-xs text-ink/70">
+          <p className="font-medium text-ink">Compte de démonstration</p>
+          <p className="mt-0.5">
+            {DEMO_EMAIL} · {DEMO_PASSWORD}
+          </p>
+          <button
+            onClick={useDemo}
+            className="mt-1 font-medium text-clay hover:underline"
+          >
+            Remplir automatiquement
+          </button>
+        </div>
+
+        <div className="mt-6 space-y-4">
           <div>
             <label className="mb-1 block text-sm text-ink/70">E-mail</label>
             <input
               className={cls(showErr("email"))}
-              placeholder="lea@maison-lea.fr"
+              placeholder="demo@kult.fr"
               value={form.email}
               onChange={(e) => set("email", e.target.value)}
               onBlur={() => touch("email")}
@@ -75,8 +104,14 @@ export default function ConnexionPage() {
             </div>
           </div>
 
+          {authError && (
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+              {authError}
+            </p>
+          )}
+
           <button
-            onClick={login}
+            onClick={doLogin}
             className="block w-full rounded-full bg-clay px-6 py-3 text-center text-sm font-medium text-cream transition-colors hover:bg-clayDark"
           >
             Se connecter

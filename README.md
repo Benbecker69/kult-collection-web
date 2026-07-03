@@ -8,45 +8,31 @@ Projet pédagogique **EEMI x KULT Collection** — pôle développement web (M1 
 
 ## 🎯 Périmètre du pôle dev
 
-Le projet global est découpé en plusieurs briefs. **Notre périmètre (développeurs)** :
+- **Refonte du site vitrine + e-commerce** (B2C)
+- **Espace B2B dédié** (compte revendeur, catalogue pro, panier, suivi de commande & de livraison)
 
-- **Refonte totale du site vitrine + e-commerce** (B2C)
-- **Espace B2B dédié** (compte revendeur, devis, suivi de commande/livraison)
-
-Les volets TikTok et Salon Maison & Objet sont traités par les autres pôles (MD / UXUI) — hors de notre scope.
+Les volets TikTok et Salon Maison & Objet sont traités par les autres pôles — hors de notre scope.
 
 ---
 
-## 🧱 Choix techniques & justification
-
-### Pourquoi du pro-code (Next.js) plutôt qu'un CMS clé-en-main (Wix / WordPress) ?
-
-Le brief demande un site **reproductible sur un CMS** pour une gestion facile par l'équipe Kult. On répond à cette contrainte **sans sacrifier la qualité**, via une **architecture headless / découplée** :
-
-| Besoin du brief | Réponse |
-|---|---|
-| Univers & storytelling de marque fort | Liberté totale de DA en pro-code (impossible à ce niveau sur un thème Wix) |
-| Croissance internationale (30+ pays) | SEO/SSR + i18n natifs de Next.js |
-| Performance (→ conversion) | Rendu serveur, optimisation images, Core Web Vitals |
-| **Gestion facile par une équipe non-technique** | **Architecture CMS-ready** (voir ci-dessous) |
-
-### Stack
+## 🧱 Stack technique
 
 | Couche | Techno | Rôle |
 |---|---|---|
-| Framework | **Next.js (App Router) + TypeScript** | Front + routing + rendu serveur |
-| Style | **Tailwind CSS** | Design system aligné sur la charte graphique (pôle DA) |
-| Données (prototype) | **JSON mocké** (`src/data/`) | Source de données du prototype |
-| Animations | Framer Motion | Mise en scène de l'univers sensoriel |
-| Déploiement | Vercel | Aperçus de déploiement à montrer au jury |
+| Framework | **Next.js 16 (App Router) + TypeScript** | Front, routing, rendu serveur (SSR/SSG) |
+| Style | **Tailwind CSS v4** | Design system (design tokens dans `globals.css`) |
+| État client | **Zustand** (persistant via `localStorage`) | Panier, commandes, compte, favoris, auth |
+| Données (prototype) | **JSON** (`src/data/`) via `src/lib/repository.ts` | Source de données du prototype |
+| Animations | **CSS** (keyframes) + reveal au scroll | Apparitions, hover, timelines |
+| Déploiement | **Vercel** | Aperçus de déploiement |
 
-> **Versions cibles** : Node 20+, Next.js 15, React 19.
+> **Versions cibles** : Node 20+, Next.js 16, React 19.
 
 ---
 
 ## 🔌 Architecture « CMS-ready » — le point clé
 
-Le prototype lit des données **mockées en JSON**, mais **aucun composant ne lit le JSON directement**. Toutes les données passent par une **couche d'accès unique** (`src/lib/repository.ts`).
+Le prototype lit des données **mockées en JSON**, mais **aucun composant ne lit le JSON directement**. Toutes les données produits/collections/commandes passent par une **couche d'accès unique** : `src/lib/repository.ts`.
 
 ```
 Composants (UI)
@@ -54,115 +40,117 @@ Composants (UI)
       ▼
 src/lib/repository.ts          ← POINT DE BASCULE UNIQUE
    getProducts()               • aujourd'hui : lit src/data/*.json
-   getProductBySlug(slug)      • demain : appelle l'API d'un CMS headless
-   getCollections()              (Sanity / Storyblok) ou commerce (Shopify)
-   ...
+   getProProducts()            • demain : appelle l'API d'un CMS / commerce
+   getB2bOrders() ...            headless (Shopify, Sanity…)
       │
       ▼
 src/data/*.json (mock)   ⇄   [ remplaçable par un CMS sans toucher au front ]
 ```
 
-**Conséquence concrète** : passer du prototype à une vraie solution gérable par le client = remplacer **l'implémentation de `repository.ts`** (quelques fonctions), pas l'interface des composants. Le front ne bouge pas.
+**Conséquence concrète** : passer du prototype à une solution gérée par le client = réécrire **l'implémentation de `repository.ts`**, pas l'interface des composants. Le front ne bouge pas.
 
-➡️ C'est ce qui rend le site **« reproductible avec un CMS »** comme l'exige le brief : le JSON est une donnée de **développement**, jamais une contrainte pour le client final.
-
-**Règle d'or de l'équipe : un composant n'importe JAMAIS un fichier de `src/data/`. Il passe toujours par `src/lib/repository.ts`.**
+> **Règle d'or : un composant n'importe JAMAIS un fichier de `src/data/`. Il passe toujours par `src/lib/repository.ts`.**
+> L'état applicatif (panier, commandes en cours…) est géré côté client par Zustand, et serait synchronisé avec l'API commerce en production.
 
 ---
 
-## 📁 Structure du projet (cible)
+## ✨ Fonctionnalités
+
+### Site B2C
+- Page d'accueil : collections, sélection produits, section histoire, newsletter.
+- Données servies via `repository.ts`.
+
+### Espace B2B (`/entreprise`, `/compte/entreprise`)
+- **Vitrine pro** : secteurs, services, « comment ça marche », **formulaire de devis** (validé).
+- **Création de compte pro** : assistant en 2 étapes, **validation par champ** (SIRET 14 chiffres, e-mail, téléphone, mot de passe + confirmation).
+- **Connexion** : authentification mockée avec **compte de démonstration** (voir plus bas), garde d'accès sur l'espace privé, déconnexion.
+- **Tableau de bord** : statistiques animées (count-up), dernière commande, raccourcis.
+- **Catalogue pro** : prix remisés, **filtres par catégorie**, **recherche**, **favoris**, ajout au **panier**.
+- **Panier / commande** : édition des quantités, contrôle du **minimum de commande**, choix adresse & paiement, création d'une commande réelle (persistée).
+- **Commandes** : historique + détail avec **suivi de commande** et **suivi de livraison** (bouton démo pour faire progresser le statut en direct).
+- **Compte** : informations éditables, gestion des adresses, favoris (réassort rapide).
+- **Feedback UX** : toasts, validations en ligne, animations douces (respecte `prefers-reduced-motion`).
+
+---
+
+## 🔑 Compte de démonstration
+
+L'authentification est **mockée** (prototype, sans backend). Pour accéder à l'espace pro :
 
 ```
-kult-collection-web/
-├── src/
-│   ├── app/                  # Pages (App Router Next.js)
-│   │   ├── (boutique)/       # Home, Collections, Catalogue, Fiche produit
-│   │   ├── entreprise/       # Vitrine B2B + formulaire devis
-│   │   ├── histoire/         # Notre Histoire
-│   │   ├── contact/
-│   │   ├── compte/           # Espace Login (B2C + B2B)
-│   │   └── panier/
-│   ├── components/           # Composants réutilisables
-│   │   ├── product/          # CarteProduit, GrilleProduits
-│   │   ├── layout/           # Header, Footer, BarRecherche
-│   │   └── forms/            # Contact, Devis, Newsletter, Livraison
-│   ├── lib/
-│   │   └── repository.ts     # ⭐ couche d'accès aux données (cf. ci-dessus)
-│   ├── data/                 # JSON mockés (produits, collections, contenus)
-│   └── types/                # Types TypeScript partagés
-├── public/                   # Assets statiques (images, fonts)
-├── docs/                     # Documentation projet
-└── README.md
+E-mail       : demo@kult.fr
+Mot de passe : kult1234
+```
+
+La page `/connexion` propose un bouton **« Remplir automatiquement »**.
+
+---
+
+## 📁 Structure du projet
+
+```
+src/
+├── app/
+│   ├── layout.tsx              # Layout racine (polices, <html>)
+│   ├── globals.css             # Tailwind v4 + design tokens + animations
+│   ├── (site)/                 # Site B2C (accueil)
+│   ├── (b2b-site)/             # Espace pro — pages publiques
+│   │   ├── entreprise/                     # vitrine B2B
+│   │   ├── entreprise/inscription/         # création de compte pro
+│   │   └── connexion/                      # connexion (auth mockée)
+│   └── (b2b-app)/              # Espace pro — dashboard (protégé)
+│       └── compte/entreprise/  # tableau de bord, catalogue, panier,
+│                               # commandes, informations, adresses, favoris
+├── components/
+│   ├── layout/                 # composants du site B2C
+│   └── b2b/                    # composants de l'espace pro
+├── lib/
+│   ├── repository.ts           # ⭐ couche d'accès aux données
+│   ├── validation.ts           # validateurs de formulaires
+│   └── use-hydrated.ts         # hook anti-mismatch d'hydratation
+├── stores/                     # état client Zustand (cart, orders, account,
+│                               # favorites, auth, toast)
+├── data/                       # JSON mockés (produits, collections, commandes)
+└── types/                      # types TypeScript partagés
 ```
 
 ---
 
-## 🗺️ Arborescence du site (réalisée par le pôle UX/MD)
-
-10 pages / sections principales :
-
-1. **Home** — Collections, Sélection produits, Histoire, Newsletter, Footer
-2. **Collections** — 7 collections, chacune → grille de cartes produits
-3. **Catalogue** — par catégorie : Bougies, Parfums, Céramiques, Diffuseurs, Collections, Sélection
-4. **Espace Entreprise (B2B)** — Bannière CTA, Secteurs Pro, Services Pro, Formulaire Devis
-5. **Notre Histoire** — storytelling de marque
-6. **Contacts** — formulaire, adresses, réseaux sociaux
-7. **Bar de recherche** — composant global (header)
-8. **Espace Login** — compte **Particulier (B2C)** + compte **Entreprise (B2B)**, parcours distincts
-9. **Panier** — tunnel de commande (récap, suggestions, livraison, paiement)
-10. **Footer** — composant global
-
-**Composants à factoriser dès le départ** : Footer, Bar de recherche, Carte Produit, Grille de produits, Formulaires.
-
-> Détail complet : voir `docs/architecture-site.md` (à intégrer au repo).
-
----
-
-## ⚙️ Démarrer le projet (une fois initialisé)
+## ⚙️ Démarrer le projet
 
 ```bash
 # Installer les dépendances
 npm install
 
-# Lancer le serveur de dev
+# Serveur de développement
 npm run dev          # http://localhost:3000
 
 # Build de production
-npm run build && npm start
+npm run build
+npm start
 ```
 
-> ⚠️ Le projet Next.js n'est **pas encore initialisé** : on attend les **wireframes** du pôle UX/DA avant de développer le visuel. En attendant, on prépare l'arborescence, le modèle de données et la note de reco technique.
-
----
-
-## 🌿 Workflow de dev (à 2 développeurs)
-
-- **`main`** : branche stable, toujours fonctionnelle. On ne pousse jamais directement dessus.
-- **`feat/<nom>`** : une branche par fonctionnalité (ex. `feat/carte-produit`, `feat/page-catalogue`).
-- **Pull Request** : chaque feature passe par une PR relue par l'autre dev avant merge.
-- **Commits** : messages clairs en français, au présent (`ajoute la grille de produits`, `corrige le header mobile`).
-
-### Répartition indicative
-- Se mettre d'accord page par page / composant par composant pour éviter les conflits.
-- Construire **d'abord les composants partagés** (Footer, Header, Carte Produit) → tout le reste en dépend.
+> Node 20+ requis.
 
 ---
 
 ## 📋 Conventions
 
-- **Langue du site** : français (libellés tels que définis dans l'arborescence).
+- **Langue du site** : français.
 - **TypeScript** partout, types partagés dans `src/types/`.
-- **Composants** : un dossier par composant complexe, nommage en PascalCase.
 - **Pas de données en dur dans les composants** → tout passe par `repository.ts`.
+- **Style** : Tailwind, tokens de couleur/police définis dans `globals.css`.
+- **Commits** : messages en anglais avec préfixe de type (`[feat]`, `[chore]`, `[docs]`, `[fix]`).
 
 ---
 
 ## ✅ État d'avancement
 
 - [x] Cadrage techno & architecture
-- [x] Arborescence du site (pôle UX/MD)
-- [ ] Note de recommandation technique (livrable jury)
-- [ ] Modèle de données JSON
-- [ ] Wireframes (en attente du pôle UX/DA)
-- [ ] Initialisation du projet Next.js
-- [ ] Développement des pages
+- [x] Note de recommandation technique (livrable jury) — `docs/`
+- [x] Arborescences site & B2B — `docs/`
+- [x] Initialisation Next.js + couche de données (`repository.ts`)
+- [x] Site B2C (page d'accueil)
+- [x] Espace B2B complet (vitrine, compte, catalogue, panier, commandes, suivi)
+- [ ] Habillage final aligné sur la charte du pôle DA
+- [ ] Branchement d'un CMS / commerce headless (phase de production)

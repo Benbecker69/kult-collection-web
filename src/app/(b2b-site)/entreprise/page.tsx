@@ -7,7 +7,7 @@ import { BrandLogo } from "@/components/b2b/brand-logo";
 const stats = [
   { value: "30+", label: "pays de distribution" },
   { value: "50+", label: "produits artisanaux" },
-  { value: "-40%", label: "tarifs revendeurs" },
+  { value: "−40%", label: "tarifs revendeurs" },
   { value: "48h", label: "validation de compte" },
 ];
 
@@ -28,7 +28,7 @@ const secteurs = [
 
 const services = [
   "Tarifs dégressifs réservés aux professionnels",
-  "Minimum de commande accessible (dès 150 € HT)",
+  "Minimum de commande accessible, dès 150 € HT",
   "Réassort rapide depuis votre espace",
   "Suivi de commande et de livraison en temps réel",
 ];
@@ -36,66 +36,62 @@ const services = [
 const steps = [
   { n: "01", t: "Créez votre compte", d: "Renseignez votre société, on valide sous 48h." },
   { n: "02", t: "Commandez en ligne", d: "Catalogue pro, tarifs remisés, panier dédié." },
-  { n: "03", t: "Suivez la commande", d: "Statut en temps réel, de la validation à l'expédition." },
-  { n: "04", t: "Recevez & réassortez", d: "Suivi de livraison jusqu'à réception, réassort en un clic." },
+  { n: "03", t: "Suivez la commande", d: "Statut en temps réel, jusqu'à l'expédition." },
+  { n: "04", t: "Recevez & réassortez", d: "Suivi de livraison, réassort en un clic." },
 ];
 
 export default function EntreprisePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 85% 0%, rgba(255,213,229,0.6) 0%, rgba(252,244,230,0) 60%), radial-gradient(90% 80% at 0% 100%, rgba(17,85,204,0.12) 0%, rgba(252,244,230,0) 55%)",
-          }}
-        />
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
+      <section className="border-b border-ink/10">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.1fr_0.9fr] md:py-28">
           <div className="animate-fade-up">
-            <span className="inline-flex items-center gap-2 rounded-full border border-clay/30 bg-clay/5 px-3 py-1 text-xs font-medium uppercase tracking-widest text-clayDark">
-              Espace professionnel
-            </span>
-            <h1 className="mt-5 font-display text-4xl leading-tight text-ink md:text-6xl">
-              Revendez l&apos;art de vivre KULT
-            </h1>
-            <p className="mt-5 max-w-md text-lg text-ink/70">
-              Bougies, parfums d&apos;intérieur et céramique faits main. Un espace
-              revendeur pensé pour commander simplement et suivre chaque commande,
-              jusqu&apos;à la livraison.
+            <p className="text-xs uppercase tracking-[0.25em] text-clay">
+              KULT · Professionnels
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <h1 className="mt-6 font-display text-5xl font-light leading-[1.03] text-ink md:text-7xl">
+              Revendez l&apos;art
+              <br />
+              de vivre <span className="italic text-clay">KULT</span>.
+            </h1>
+            <p className="mt-7 max-w-md text-lg leading-relaxed text-ink/60">
+              Bougies, parfums d&apos;intérieur et céramique faits main. Un
+              espace revendeur pour commander simplement et suivre chaque
+              commande, jusqu&apos;à la livraison.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-6">
               <Link
                 href="/entreprise/inscription"
-                className="rounded-full bg-clay px-6 py-3 text-sm font-medium text-cream shadow-sm transition-all hover:-translate-y-0.5 hover:bg-clayDark hover:shadow-md"
+                className="rounded-full bg-clay px-7 py-3.5 text-sm font-medium text-cream transition-colors hover:bg-clayDark"
               >
                 Créer un compte pro
               </Link>
               <Link
                 href="#devis"
-                className="rounded-full border border-ink/15 px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-ink/40"
+                className="border-b border-ink/30 pb-1 text-sm text-ink transition-colors hover:border-ink"
               >
                 Demander un devis
               </Link>
             </div>
           </div>
 
-          <div className="animate-fade-up" style={{ animationDelay: "150ms" }}>
-            <div className="relative mx-auto aspect-4/5 w-full max-w-sm">
-              <div className="absolute inset-0 rotate-3 rounded-[2rem] bg-blush" />
-              <div className="absolute inset-0 -rotate-2 rounded-[2rem] bg-sand" />
-              <div className="absolute inset-0 grid place-items-center rounded-[2rem] bg-gradient-to-br from-cream to-sand shadow-xl">
-                <div className="absolute left-5 top-5">
-                  <BrandLogo showPro={false} />
+          <div className="animate-fade-up" style={{ animationDelay: "120ms" }}>
+            <div className="relative mx-auto max-w-sm">
+              <div className="overflow-hidden rounded-2xl border border-ink/10 bg-sand">
+                <div className="grid aspect-4/5 place-items-center p-10">
+                  <Image
+                    src="/images/products/carafe.png"
+                    alt="Céramique KULT"
+                    width={280}
+                    height={280}
+                    className="drop-shadow-xl"
+                    priority
+                  />
                 </div>
-                <Image
-                  src="/images/products/carafe.png"
-                  alt="Céramique KULT"
-                  width={260}
-                  height={260}
-                  className="animate-float drop-shadow-xl"
-                />
+              </div>
+              <div className="absolute left-4 top-4">
+                <BrandLogo showPro={false} />
               </div>
             </div>
           </div>
@@ -103,113 +99,112 @@ export default function EntreprisePage() {
       </section>
 
       {/* Stats */}
-      <section className="border-y border-ink/10 bg-sand/40">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-8 md:grid-cols-4">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 80} className="text-center">
-              <p className="font-display text-3xl text-clay md:text-4xl">
+      <section className="border-b border-ink/10 bg-sand/30">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 px-6 md:grid-cols-4 md:divide-x md:divide-ink/10">
+          {stats.map((s) => (
+            <div key={s.label} className="px-2 py-10 text-center md:px-6">
+              <p className="font-display text-4xl font-light text-ink md:text-5xl">
                 {s.value}
               </p>
-              <p className="mt-1 text-sm text-ink/60">{s.label}</p>
-            </Reveal>
+              <p className="mt-3 text-xs uppercase tracking-widest text-ink/40">
+                {s.label}
+              </p>
+            </div>
           ))}
         </div>
       </section>
 
       {/* Secteurs */}
-      <section id="secteurs" className="mx-auto max-w-6xl px-6 py-20">
+      <section id="secteurs" className="mx-auto max-w-6xl px-6 py-24">
         <Reveal>
-          <p className="text-xs uppercase tracking-widest text-clay">Secteurs</p>
-          <h2 className="mt-2 max-w-xl font-display text-3xl text-ink md:text-4xl">
-            Pensé pour les professionnels de l&apos;art de vivre
-          </h2>
+          <div className="max-w-xl">
+            <p className="text-xs uppercase tracking-[0.25em] text-clay">
+              Secteurs
+            </p>
+            <h2 className="mt-4 font-display text-4xl font-light leading-tight text-ink md:text-5xl">
+              Pensé pour les professionnels de l&apos;art de vivre
+            </h2>
+          </div>
         </Reveal>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 md:grid-cols-3">
           {secteurs.map((s, i) => (
-            <Reveal key={s.title} delay={i * 100}>
-              <div className="group h-full rounded-2xl border border-ink/10 bg-white/60 p-7 transition-all hover:-translate-y-1 hover:border-clay/30 hover:shadow-lg">
-                <div className="mb-5 h-10 w-10 rounded-xl bg-clay/10 transition-colors group-hover:bg-clay/20" />
-                <h3 className="font-display text-xl text-ink">{s.title}</h3>
-                <p className="mt-2 text-sm text-ink/60">{s.text}</p>
-              </div>
-            </Reveal>
+            <div key={s.title} className="bg-cream p-8">
+              <p className="font-display text-2xl font-light text-clay/60">
+                0{i + 1}
+              </p>
+              <h3 className="mt-5 font-display text-xl text-ink">{s.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink/60">
+                {s.text}
+              </p>
+            </div>
           ))}
         </div>
       </section>
 
       {/* Services */}
-      <section id="services" className="bg-ink/[0.03]">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
+      <section id="services" className="border-y border-ink/10 bg-sand/40">
+        <div className="mx-auto grid max-w-6xl gap-14 px-6 py-24 md:grid-cols-2">
           <Reveal>
-            <p className="text-xs uppercase tracking-widest text-clay">Services</p>
-            <h2 className="mt-2 font-display text-3xl text-ink md:text-4xl">
+            <p className="text-xs uppercase tracking-[0.25em] text-clay">
+              Services
+            </p>
+            <h2 className="mt-4 font-display text-4xl font-light leading-tight text-ink md:text-5xl">
               Tout ce qu&apos;il faut pour revendre sereinement
             </h2>
-            <p className="mt-4 max-w-md text-ink/60">
+            <p className="mt-6 max-w-md leading-relaxed text-ink/60">
               Un compte revendeur complet, des conditions claires et un suivi de
               bout en bout — sans jamais quitter votre espace.
             </p>
           </Reveal>
-          <Reveal delay={120}>
-            <ul className="space-y-4">
-              {services.map((s) => (
-                <li
-                  key={s}
-                  className="flex items-start gap-3 rounded-xl bg-white/60 px-5 py-4"
-                >
-                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-clay text-[11px] text-cream">
-                    ✓
-                  </span>
-                  <span className="text-ink/80">{s}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+          <div className="divide-y divide-ink/10 border-t border-ink/10">
+            {services.map((s) => (
+              <div key={s} className="flex items-baseline gap-4 py-5">
+                <span className="font-display text-lg leading-none text-clay">
+                  —
+                </span>
+                <span className="text-ink/80">{s}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Comment ça marche */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <Reveal>
-          <h2 className="text-center font-display text-3xl text-ink md:text-4xl">
-            Comment ça marche
-          </h2>
-        </Reveal>
-        <div className="mt-12 grid gap-6 md:grid-cols-4">
-          {steps.map((s, i) => (
-            <Reveal key={s.n} delay={i * 90}>
-              <div className="h-full rounded-2xl border border-ink/10 bg-white/50 p-6">
-                <p className="font-display text-3xl text-clay/40">{s.n}</p>
-                <h3 className="mt-3 font-medium text-ink">{s.t}</h3>
-                <p className="mt-1 text-sm text-ink/60">{s.d}</p>
-              </div>
-            </Reveal>
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <h2 className="font-display text-4xl font-light text-ink md:text-5xl">
+          Comment ça marche
+        </h2>
+        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 md:grid-cols-4">
+          {steps.map((s) => (
+            <div key={s.n} className="bg-cream p-7">
+              <p className="font-display text-3xl font-light text-clay/40">
+                {s.n}
+              </p>
+              <h3 className="mt-5 font-medium text-ink">{s.t}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink/60">{s.d}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Devis CTA */}
+      {/* Devis */}
       <section id="devis" className="mx-auto max-w-6xl px-6 pb-24">
-        <Reveal>
-          <div className="overflow-hidden rounded-3xl bg-ink px-8 py-12 text-cream md:px-14 md:py-16">
-            <div className="grid gap-10 md:grid-cols-2">
-              <div>
-                <h2 className="font-display text-3xl md:text-4xl">
-                  Un projet ? Demandez un devis
-                </h2>
-                <p className="mt-4 max-w-sm text-cream/70">
-                  Dites-nous en quelques mots votre besoin, notre équipe pro vous
-                  recontacte rapidement.
-                </p>
-                <p className="mt-6 text-sm text-cream/50">
-                  Ou créez directement votre compte revendeur pour commander en
-                  ligne.
-                </p>
-              </div>
-              <DevisForm />
-            </div>
+        <div className="grid gap-12 rounded-2xl bg-ink px-8 py-14 text-cream md:grid-cols-2 md:px-14 md:py-16">
+          <div>
+            <h2 className="font-display text-4xl font-light md:text-5xl">
+              Un projet ? Demandez un devis
+            </h2>
+            <p className="mt-5 max-w-sm leading-relaxed text-cream/60">
+              Dites-nous en quelques mots votre besoin, notre équipe pro vous
+              recontacte rapidement.
+            </p>
+            <p className="mt-8 text-sm text-cream/40">
+              Ou créez directement votre compte revendeur pour commander en
+              ligne.
+            </p>
           </div>
-        </Reveal>
+          <DevisForm />
+        </div>
       </section>
     </>
   );

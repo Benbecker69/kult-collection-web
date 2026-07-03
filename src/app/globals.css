@@ -27,7 +27,7 @@
   --color-gold: #d9a441; /* ambre « en préparation » (statut) */
   --color-ink: #1c1b19; /* texte principal */
   --color-kultBlue: #1155cc;
-  --font-display: var(--font-geist-sans);
+  --font-display: var(--font-fraunces);
 }
 
 @layer components {
